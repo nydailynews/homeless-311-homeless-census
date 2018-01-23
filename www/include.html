@@ -1,5 +1,5 @@
-
 <!DOCTYPE html>
+<html>
 <head>
     <title>Homeless 311 calls</title>
     <meta name="viewport" content="width=device-width" />
@@ -149,7 +149,7 @@ var choropleth = {
         color: { 'Calls': 180, 'Tax': 30},
         color_race: { 'Asian': 0, 'Black': 30, 'Hispanic': 180, 'White': 240, 'Other': 120 },
     },
-    current_field: 'Tax',
+    current_field: 'Calls',
     switch_map: function(input) {
         if ( input.value == 'Tax' || input.value == 'Calls' )
         {
@@ -191,7 +191,7 @@ var choropleth = {
         style: function(feature) {
             //console.log(feature);
             var c = choropleth;
-            var slug = feature['properties']['BoroCD'];
+            var slug = feature['properties']['postalCode'];
             if ( typeof data[slug] === 'undefined' ) return { weight: 0, fillOpacity: 0, color: '#000' };
 
             var d = c.data;

@@ -183,7 +183,7 @@ var choropleth = {
         onEachFeature: function (feature, layer) {
             layer.on({
                 click: function(e) { choropleth.clear_borders(); choropleth.info.update(e, this.feature.properties); },
-                mouseover: function(e) { choropleth.info.update(e, this.feature.properties);                   },
+                mouseover: function(e) { choropleth.info.update(e, this.feature.properties); },
                 mouseout: function(e) { choropleth.info.update(e); }
             });
         },
@@ -206,7 +206,7 @@ var choropleth = {
             var percent = Math.floor(( (val- c.config.min[c.current_field]) / ( c.config.max[c.current_field] - c.config.min[c.current_field]) ) * 100) - 10;
             // Go from light to dark on Whiteness, and the opposite on Taxes
             color_percent = 30 + Math.floor(percent/1.2);
-            if ( c.current_field == 'Tax' ) color_percent = 100 - Math.floor(percent/1.2);
+            if ( c.current_field == 'Calls' ) color_percent = 100 - Math.floor(percent/1.2);
             return { 
                 weight: 1,
                 fillOpacity: 1,

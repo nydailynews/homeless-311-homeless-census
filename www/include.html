@@ -245,14 +245,14 @@ var choropleth = {
             url: "nyc-zip-codes-simplified.json",
             success: function(data) {
                 $(data.features).each(function(key, data) {
-                    console.log(key,data);
+                    //console.log(key,data);
                     choropleth.layerOptions.addData(data);
                 });
             },
             error: function (status,e) {
                 console.log(status,e);
             }
-        }).error(function() {console.log ("booooo")});
+        }).error(function() {console.log ("booooo this code")});
         this.layerOptions.addTo(this.map);
 
 
@@ -266,32 +266,15 @@ var choropleth = {
             return this._div;
         };
         this.info.update = function (e, props) {
+
             if ( typeof props !== 'undefined' )
             {
-                if ( typeof data[props['BoroCD']] === 'undefined' ) return {}; 
-                var slug = props['BoroCD'];
+                if ( typeof data[props['postalCode']] === 'undefined' ) return {}; 
+                var slug = props['postalCode'];
                 var d = data[slug];
-                var percent = '%';
-                if ( d['Tax'] == 'n/a' ) percent = '';
-
-                var advantage = 'advantage';
-                var below = 'below';
-                if ( +d['Tax'] > 100 ) {
-                    advantage = 'disadvantage';
-                    below = 'above';
-                }
-                var blurb = '<h4>Assessed value ' + below + ' sales price.</h4>';
-                var cd_blurb = '<h4>' + d['Name'] + ' is at a<br>\n\
-property tax ' + advantage + ' (' + d['Tax'] + percent + ')</h4>';
-                if ( d['Tax'] == 'n/a' ) {
-                    blurb = '';
-                    cd_blurb = '<h4>' + d['Name'] + '</h4>';
-                }
-                var markup = '<h3>' + d['Community District'] + '</h3>\n\
-' + blurb + cd_blurb + '\n\
-<ul>\n\
-<li>' + d['Calls'] + '% non-hispanic white</li>\n\
-</ul>';
+                
+                var blurb = '<h4>' + '# of calls:  ' + d['Calls'] + '</h4>';
+                var markup = '<h3>' + 'ZIP Code: ' + [props['postalCode']] + '</h3>' + blurb
                 this._div.innerHTML = markup;
                 var layer = e.target;
                 layer.setStyle({
@@ -301,7 +284,7 @@ property tax ' + advantage + ' (' + d['Tax'] + percent + ')</h4>';
                 });
             }
             else {
-                this._div.innerHTML =  'Hover or tap on a community district';
+                this._div.innerHTML =  'Hover or tap on a ZIP code';
                 if ( typeof e !== 'undefined' ) {
                     window.choropleth.layerOptions.resetStyle(e.target);
                 }

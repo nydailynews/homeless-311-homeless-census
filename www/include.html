@@ -1,5 +1,5 @@
-
 <!DOCTYPE html>
+<html>
 <head>
     <title>Homeless 311 calls</title>
     <meta name="viewport" content="width=device-width" />
@@ -149,7 +149,7 @@ var choropleth = {
         color: { 'Calls': 180, 'Tax': 30},
         color_race: { 'Asian': 0, 'Black': 30, 'Hispanic': 180, 'White': 240, 'Other': 120 },
     },
-    current_field: 'Tax',
+    current_field: 'Calls',
     switch_map: function(input) {
         if ( input.value == 'Tax' || input.value == 'Calls' )
         {
@@ -183,7 +183,7 @@ var choropleth = {
         onEachFeature: function (feature, layer) {
             layer.on({
                 click: function(e) { choropleth.clear_borders(); choropleth.info.update(e, this.feature.properties); },
-                mouseover: function(e) { choropleth.info.update(e, this.feature.properties);                   },
+                mouseover: function(e) { choropleth.info.update(e, this.feature.properties); },
                 mouseout: function(e) { choropleth.info.update(e); }
             });
         },
@@ -191,7 +191,7 @@ var choropleth = {
         style: function(feature) {
             //console.log(feature);
             var c = choropleth;
-            var slug = feature['properties']['BoroCD'];
+            var slug = feature['properties']['postalCode'];
             if ( typeof data[slug] === 'undefined' ) return { weight: 0, fillOpacity: 0, color: '#000' };
 
             var d = c.data;
@@ -206,7 +206,7 @@ var choropleth = {
             var percent = Math.floor(( (val- c.config.min[c.current_field]) / ( c.config.max[c.current_field] - c.config.min[c.current_field]) ) * 100) - 10;
             // Go from light to dark on Whiteness, and the opposite on Taxes
             color_percent = 30 + Math.floor(percent/1.2);
-            if ( c.current_field == 'Tax' ) color_percent = 100 - Math.floor(percent/1.2);
+            if ( c.current_field == 'Calls' ) color_percent = 100 - Math.floor(percent/1.2);
             return { 
                 weight: 1,
                 fillOpacity: 1,

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Homeless 311 calls</title>
+<title>NYC homeless 311 calls, 2017 - New York Daily News</title>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -148,8 +148,10 @@ p#source {
 </div>
 
 <div>
-    <h2>Number of homeless-related 311 calls</h2>
+    <h2>New York City homeless-related 311 calls, 2017, by zip code</h2>
+    <!--
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    -->
 
     <div class="maps" id="nyc-boroughs"></div>
     <div id="legend">
@@ -176,7 +178,9 @@ p#source {
                 <dt id="mid" style=""></dt><dd>1001 to 1500</dd>
                 <dt id="max" style="background-color: #000;"></dt><dd>1500+</dd>
             </dl> -->
+            <!--
     <p id="source"> Source: XXXXXXX</p>
+            -->
 </article>
 <script src="data.js"></script>
 <script>
@@ -312,8 +316,8 @@ var choropleth = {
                 var slug = props['postalCode'];
                 var d = data[slug];
                 
-                var blurb = '<h4>' + '# of calls:  ' + d['Calls'] + '</h4>';
-                var markup = '<h3>' + 'ZIP Code: ' + [props['postalCode']] + '</h3>' + blurb
+                var blurb = '<h4>' + d['Calls'] + ' calls</h4>';
+                var markup = '<h3>' + 'ZIP Code ' + [props['postalCode']] + '</h3>' + blurb;
                 this._div.innerHTML = markup;
                 var layer = e.target;
                 layer.setStyle({

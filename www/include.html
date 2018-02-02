@@ -254,7 +254,7 @@ var choropleth = {
             };
         }
     }),
-    map: L.map('nyc-boroughs', { dragging: true, zoomControl:false, minZoom:11, scrollWheelZoom:true}).setView([40.700002, -73.949997], 8),
+    map: L.map('nyc-boroughs', { dragging: true, zoomControl:false, minZoom:10, scrollWheelZoom:true}).setView([40.700002, -73.949997], 8),
     init: function() {
         //this.map = L.map('nyc-boroughs', { zoomControl:true, minZoom:10, scrollWheelZoom:false }).setView(this.config.centerpoint, 8);
         L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {

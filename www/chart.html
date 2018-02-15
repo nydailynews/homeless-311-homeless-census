@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>NYC homeless 311 calls, 2017 - New York Daily News</title>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <script src="/js/jquery.min.js"></script>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans+Condensed:700|PT+Serif' rel='stylesheet'>
+    <style>
+h1, h2, h3 {
+    font: bold 20px 'Open Sans Condensed', sans-serif;
+    color: #333;
+    margin: auto;
+}
+h2 {
+    font-size: 26px;
+    clear: both;
+}
+p, label, dd { font: 17px/30px "PT Serif",serif; }
+article { max-width: 596px; margin: auto; }
+
+/* HANDHELD ADJUSTMENTS */
+@media only screen and (max-width:590px) {
+    h3 { font-size: 18px; }
+    h2 { clear: both; }
+    article { width: 100%; max-width: 100%; }
+}
+p#source {
+    clear: both;
+    font-size: 13px;
+    line-height: 13px;
+}
+    </style>
+</head>
+<body>
+
+<article>
+<div id="static" style="display:none;">
+    <div>
+        <h3>Current homeless beds per community district</h3>
+        <img src="map-nyc-homeless-beds.gif" alt="A color-coded map of current homeless beds per NYC community district">
+    </div>
+    <div>
+        <h3>White rate per community district</h3>
+        <img src="map-nyc-poverty.gif" alt="A color-coded map of poverty rate per NYC community district">
+    </div>
+    <div>
+        <h3>Majority race per community district</h3>
+        <img src="map-nyc-race.gif" alt="A color-coded map of the majority race and that race's relative presence, per NYC community district">
+    </div>
+</div>
+
+<div>
+    <h2>New York City homeless-related 311 calls, 2017, by zip</h2>
+    <!--
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    -->
+
+    <div class="maps" id="nyc-boroughs"></div>
+    <div id="legend">
+            <h4>NUMBER OF CALLS</h4>
+            <ul>
+                <li style="float: left;">0</li>
+                <li style="float: right;">1800+</li>
+                <li class="graph">
+                    <div class="colors">
+                        <div class="quartile" style="background-color: #FFF;"></div>
+                        <div class="quartile" style="background-color: #FEF0DE;"></div>
+                        <div class="quartile" style="background-color: #FBD29B;"></div>
+                        <div class="quartile" style="background-color: #F7AC4F;"></div>
+                        <div class="quartile" style="background-color: #B0691B;"></div>
+                        <div class="quartile" style="background-color: #000;"></div>
+                    </div>
+                </li>
+            </ul>
+    <p id="source"> Source: XXXXXXX</p>
+</article>
+<script>
+</script>
+</body>
+</html>

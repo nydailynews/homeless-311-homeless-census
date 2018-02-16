@@ -32,32 +32,100 @@ p#source {
     font-size: 13px;
     line-height: 13px;
 }
+.chart 
+{ 
+    color: black; 
+    min-width: 220px;
+    width: 100%;
+    max-width: 960px;
+}
+#homeless rect {
+  fill: #6CC3FF;
+}
+
+#homeless text {
+  fill: #666;
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+.axis text {
+  text-transform: capitalize; 
+  font: 10px sans-serif;
+  color: #666;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+.hide { display: none; }
+body, figure { margin:0; }
+p, figcaption { font: 17px/30px "PT Serif",serif; }
     </style>
 </head>
 <body>
 
 <article>
-<div id="static" style="display:none;">
-    <div>
-        <h3>Current homeless beds per community district</h3>
-        <img src="map-nyc-homeless-beds.gif" alt="A color-coded map of current homeless beds per NYC community district">
-    </div>
-    <div>
-        <h3>White rate per community district</h3>
-        <img src="map-nyc-poverty.gif" alt="A color-coded map of poverty rate per NYC community district">
-    </div>
-    <div>
-        <h3>Majority race per community district</h3>
-        <img src="map-nyc-race.gif" alt="A color-coded map of the majority race and that race's relative presence, per NYC community district">
-    </div>
-</div>
-
 <div>
-    <h2>New York City homeless-related 311 calls, 2017, by zip</h2>
-    <!--
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    -->
+    <h2></h2>
+    <svg id="homeless"></svg>
+<script src="/js/d3/d3.v4.min.js" charset="utf-8"></script>
+<script>
+d3.json('nyc-homeless-census.json', function(error, data) {
+    var margin = { top: 20, right: 20, bottom: 30, left: 30 };
+    width = 500 - margin.left - margin.right;
+    height = 500 - margin.top - margin.bottom;
+    var x = d3.scaleBand()
+        .rangeRound([0, width])
+		.padding(0);
+    var y = d3.scaleLinear()
+        .rangeRound([height, 0]);
+    var x_axis = d3.axisBottom(x);
+    var y_axis = d3.axisLeft(y)
+        .ticks(7);
+    var c = d3.select('#homeless')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+ 	var g = c.append('g')
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
+    //data = data.slice(0,1000);
+
+    x.domain(data.map(function(d) { return d['month'] + ' ' + d['year']; }));
+    y.domain([0, d3.max(data, function(d) { return d['total']; })]);
+    g.append('g')
+        .attr('class', 'x axis')
+        .attr('transform', 'translate(0,' + height + ')')
+        .call(x_axis)
+        .append('text')
+        .attr('x', 10)
+        .attr('dy', '2.5em')
+        .style('text-anchor', 'start')
+        .text('Month')
+
+    g.append('g')
+        .attr('class', 'y axis')
+        .call(y_axis)
+
+    g.selectAll('bar')
+        .data(data)
+        .enter().append('rect')
+        .attr('class', 'bar')
+        .attr('x', function(d) { console.log(d); return x(d['month'] + ' ' + d['year']); })
+        .attr('width', x.bandwidth())
+        .attr('y', function(d) { return y(+d['total']); } )
+        //.attr('y', height)
+        .attr('height', function(d) { console.log(y(d['total'])); return height - y(d['total']); });
+        //.attr('height', 2000);
+});
+
+</script>
     <div class="maps" id="nyc-boroughs"></div>
     <div id="legend">
             <h4>NUMBER OF CALLS</h4>

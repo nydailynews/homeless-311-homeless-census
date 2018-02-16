@@ -69,13 +69,17 @@ p#source {
  { display: none }
 body, figure { margin:0; }
 p, figcaption { font: 17px/30px "PT Serif",serif; }
+#total_text:after {
+	content: " total homeless";
+}
     </style>
 </head>
 <body>
 
 <article>
 <div>
-    <h2></h2>
+    <h2>Homeless in NYC, by month, since </h2>
+	<h3 id="total_text" class="hide"></h3>
     <svg id="homeless"></svg>
 <script src="/js/d3/d3.v4.min.js" charset="utf-8"></script>
 <script>
@@ -96,6 +100,7 @@ d3.json('nyc-homeless-census.json', function(error, data) {
         .attr('height', height + margin.top + margin.bottom)
  	var g = c.append('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+	var total_text = document.getElementById('total_text');
 
     //data = data.slice(0,1000);
 
@@ -118,6 +123,22 @@ d3.json('nyc-homeless-census.json', function(error, data) {
     g.selectAll('bar')
         .data(data)
         .enter().append('rect')
+		.on("mouseover", function(d) {
+			total_text.textContent = d['total'].toLocaleString();
+			total_text.classList.remove('hide');
+			console.info(d);
+			/*
+			chart.append("text").attr({
+				  id: "t" + d.x + "-" + d.y + "-" + i,
+				   x: function() { return xScale(d.x) - 30; },
+				   y: function() { return yScale(d.y) - 15; }
+			   })
+			   .text(function() {
+					return Math.floor(d['hours']);  // Value of the text
+				  });
+				  */
+		} )
+		.on("mouseout", function(d) { } )
         .attr('class', 'bar')
         .attr('x', function(d) { console.log(d); return x(d['month'] + ' ' + d['year']); })
         .attr('width', x.bandwidth())

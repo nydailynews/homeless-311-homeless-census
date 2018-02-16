@@ -10,13 +10,12 @@
     <link href='//fonts.googleapis.com/css?family=Open+Sans+Condensed:700|PT+Serif' rel='stylesheet'>
     <style>
 h1, h2, h3 {
-    font: bold 20px 'Open Sans Condensed', sans-serif;
+    font: bold 24px 'Open Sans Condensed', sans-serif;
     color: #333;
     margin: auto;
 }
 h2 {
-    font-size: 26px;
-    clear: both;
+    font-size: 20px;
 }
 p, label, dd { font: 17px/30px "PT Serif",serif; }
 article { max-width: 596px; margin: auto; }
@@ -24,7 +23,7 @@ article { max-width: 596px; margin: auto; }
 /* HANDHELD ADJUSTMENTS */
 @media only screen and (max-width:590px) {
     h3 { font-size: 18px; }
-    h2 { clear: both; }
+    h2 { }
     article { width: 100%; max-width: 100%; }
 }
 p#source {
@@ -65,17 +64,12 @@ p#source {
   shape-rendering: crispEdges;
 }
 
-.x.axis path {
-}
-.hide { display: none; }
+.hide,
 .x .tick text,
 .x .tick line
  { display: none }
 body, figure { margin:0; }
 p, figcaption { font: 17px/30px "PT Serif",serif; }
-h3#total_text span:after {
-	content: "";
-}
 /*
 #homeless .bg-ed-koch { fill: #a66bff; }
 #homeless .bg-david-dinkins { fill: #ff6bc4; }
@@ -88,14 +82,15 @@ h3#total_text span:after {
 #homeless .bg-rudy-giuliani { fill: #; }
 #homeless .bg-michael-bloomberg { fill: #; }
 #homeless .bg-bill-de-blasio { fill: #; }
-*/
 
 #homeless .bg-ed-koch { fill: #e0cbff; }
 #homeless .bg-david-dinkins { fill: #ffcceb; }
 #homeless .bg-rudy-giuliani { fill: #ffe0cc; }
 #homeless .bg-michael-bloomberg { fill: #ebffcc; }
 #homeless .bg-bill-de-blasio { fill: #ccffe0; }
+*/
 
+#homeless .bg { fill-opacity: 0.5; }
 #homeless .bg-ed-koch { fill: url(#whitecarbon); }
 #homeless .bg-david-dinkins { fill: url(#circles-9); }
 #homeless .bg-rudy-giuliani { fill: url(#diagonal-stripe-1); }
@@ -104,13 +99,12 @@ h3#total_text span:after {
     </style>
 </head>
 <body>
-
 <article>
-<div>
-    <h2>Homeless in NYC, by month, 1983-2017</h2>
-	<h3 id="total_text" class="hide"><span></span></h3>
-    <svg id="homeless"></svg>
-<script src="/js/d3/d3.v4.min.js" charset="utf-8"></script>
+	<div>
+		<h1>Homeless in NYC, by month, 1983-2017</h1>
+		<h2 id="total_text">Hover / tap for details<span></span></h2>
+		<svg id="homeless"></svg>
+		<script src="/js/d3/d3.v4.min.js" charset="utf-8"></script>
 <script>
 var month_lookup = {
         'Jan': 'January',
@@ -143,8 +137,12 @@ var nyc_mayors_slugs = {
 var cur_mayor = 'Jan-1983';
 
 d3.json('nyc-homeless-census.json', function(error, data) {
-    var margin = { top: 20, right: 20, bottom: 30, left: 40 };
-    width = 500 - margin.left - margin.right;
+    var margin = { top: 10, right: 10, bottom: 10, left: 40 };
+    //width = 500 - margin.left - margin.right;
+	max_width = document.documentElement.clientWidth;
+	if ( max_width > 500 ) max_width = 500;
+	if ( max_width < 470 ) max_width = 470;
+    width = max_width - margin.left - margin.right;
     height = 500 - margin.top - margin.bottom;
     var x = d3.scaleBand()
         .rangeRound([0, width])
@@ -161,6 +159,7 @@ d3.json('nyc-homeless-census.json', function(error, data) {
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 	var total_text = document.getElementById('total_text');
 
+	console.log(data.length);
     x.domain(data.map(function(d) { return d['month'] + ' ' + d['year']; }));
     //y.domain([0, d3.max(data, function(d) { return d['total']; })]);
     y.domain([0, 70000]);

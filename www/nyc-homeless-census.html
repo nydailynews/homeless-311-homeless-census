@@ -92,14 +92,23 @@ p, figcaption { font: 17px/30px "PT Serif",serif; }
 
 #homeless .bg { fill-opacity: 0.5; }
 #homeless .bg-ed-koch { fill: url(#whitecarbon); }
-#homeless .bg-david-dinkins { fill: url(#circles-9); }
-#homeless .bg-rudy-giuliani { fill: url(#diagonal-stripe-1); }
+#homeless .bg-david-dinkins { 
+	fill-opacity: 0.2;
+	fill: url(#circles-9); }
+#homeless .bg-rudy-giuliani {
+	fill-opacity: 0.2;
+	fill: url(#diagonal-stripe-1); }
 #homeless .bg-michael-bloomberg { fill: url(#circles-2); }
 #homeless .bg-bill-de-blasio { fill: url(#crosshatch); }
 
 .mayor {
 	width: 50px;
 	height: 50px;
+}
+.mayor-text {
+	stroke: black;
+	fill: black;
+	font-size: 14px;
 }
     </style>
 </head>
@@ -145,8 +154,13 @@ d3.json('nyc-homeless-census.json', function(error, data) {
     var margin = { top: 10, right: 10, bottom: 10, left: 10 };
     //width = 500 - margin.left - margin.right;
 	max_width = document.documentElement.clientWidth;
+	mobile_offset = 0;
 	if ( max_width > 500 ) max_width = 500;
-	if ( max_width < 440 ) max_width = 440;
+	if ( max_width < 440 ) {
+		max_width = 440;
+		mobile_offset = 22;
+	}
+
     width = max_width - margin.left - margin.right;
     height = 500 - margin.top - margin.bottom;
     var x = d3.scaleBand()
@@ -223,14 +237,79 @@ d3.json('nyc-homeless-census.json', function(error, data) {
         .attr('y', function(d) { return y(+d['total']); } )
         .attr('height', function(d) { return height - y(d['total']); });
 
-	// ADD THE MAYORS FACES
+	// ADD THE MAYORS FACES and NAMES
+	var texts = g.selectAll("image").data([0]);
+	texts.enter()
+        .append('text')
+        .attr("y", "67")
+        .attr('x', 42 - mobile_offset)
+        .style('text-anchor', 'start')
+        .attr("class", "mayor-text")
+        .text('KOCH')
+	texts.enter()
+        .append('text')
+        .attr("y", "67")
+        .attr('x', 105 - mobile_offset)
+        .style('text-anchor', 'start')
+        .attr("class", "mayor-text")
+        .text('DINKINS')
+	texts.enter()
+        .append('text')
+        .attr("y", "67")
+        .attr('x', 156 - mobile_offset)
+        .style('text-anchor', 'start')
+        .attr("class", "mayor-text")
+        .text('GIULIANI')
+	texts.enter()
+        .append('text')
+        .attr("y", "67")
+        .attr('x', 246 - mobile_offset)
+        .style('text-anchor', 'start')
+        .attr("class", "mayor-text")
+        .text('BLOOMBERG')
+	texts.enter()
+        .append('text')
+        .attr("y", "67")
+        .attr('x', 386 - mobile_offset)
+        .style('text-anchor', 'start')
+        .attr("class", "mayor-text")
+        .text('de BLASIO')
 	var imgs = g.selectAll("image").data([0]);
-		imgs.enter()
+	imgs.enter()
 		.append("svg:image")
-		.attr("xlink:href", "img/ed-koch.png")
-        .attr("x", "30")
-        .attr("y", "30")
         .attr("class", "mayor")
+        .attr("y", "8")
+        .attr("x", 23 - mobile_offset)
+		.attr("xlink:href", "img/ed-koch.png")
+		.attr("alt", "NYC Mayor Ed Koch")
+	imgs.enter()
+		.append("svg:image")
+        .attr("class", "mayor")
+        .attr("y", "8")
+        .attr("x", 100 - mobile_offset)
+		.attr("xlink:href", "img/david-dinkins.png")
+		.attr("alt", "NYC Mayor David Dinkins");
+	imgs.enter()
+		.append("svg:image")
+        .attr("class", "mayor")
+        .attr("y", "8")
+        .attr("x", 150 - mobile_offset)
+		.attr("xlink:href", "img/rudy-giuliani.png")
+		.attr("alt", "NYC Mayor Rudy Giuliani");
+	imgs.enter()
+		.append("svg:image")
+        .attr("class", "mayor")
+        .attr("y", "8")
+        .attr("x", 250 - mobile_offset)
+		.attr("xlink:href", "img/michael-bloomberg.png")
+		.attr("alt", "NYC Mayor Michael Bloomberg");
+	imgs.enter()
+		.append("svg:image")
+        .attr("class", "mayor")
+        .attr("y", "8")
+        .attr("x", 390 - mobile_offset)
+		.attr("xlink:href", "img/bill-de-blasio.png")
+		.attr("alt", "NYC Mayor Bill de Blasio");
 });
 
 </script>
@@ -238,7 +317,6 @@ d3.json('nyc-homeless-census.json', function(error, data) {
 </article>
 <!-- Patterns from https://iros.github.io/patternfills/sample_svg.html -->
 <svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="circles-9" patternUnits="userSpaceOnUse" width="10" height="10"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScgLz4KICA8Y2lyY2xlIGN4PSc1JyBjeT0nNScgcj0nNScgZmlsbD0nYmxhY2snLz4KPC9zdmc+" x="0" y="0" width="10" height="10"> </image> </pattern> </defs> </svg>
-
 <svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="circles-2" patternUnits="userSpaceOnUse" width="10" height="10"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScgLz4KICA8Y2lyY2xlIGN4PScxLjUnIGN5PScxLjUnIHI9JzEuNScgZmlsbD0nYmxhY2snLz4KPC9zdmc+Cg==" x="0" y="0" width="10" height="10"> </image> </pattern> </defs> </svg>
 <svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="diagonal-stripe-1" patternUnits="userSpaceOnUse" width="10" height="10"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgICAgTTAsMTAgbDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2Utd2lkdGg9JzEnLz4KPC9zdmc+Cg==" x="0" y="0" width="10" height="10"> </image> </pattern> </defs> </svg>
 <svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="vertical-stripe-1" patternUnits="userSpaceOnUse" width="10" height="10"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScgLz4KICA8cmVjdCB4PScwJyB5PScwJyB3aWR0aD0nMScgaGVpZ2h0PScxMCcgZmlsbD0nYmxhY2snIC8+Cjwvc3ZnPg==" x="0" y="0" width="10" height="10"> </image> </pattern> </defs> </svg>

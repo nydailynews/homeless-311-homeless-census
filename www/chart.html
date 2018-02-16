@@ -78,7 +78,7 @@ p, figcaption { font: 17px/30px "PT Serif",serif; }
 
 <article>
 <div>
-    <h2>Homeless in NYC, by month, since </h2>
+    <h2>Homeless in NYC, by month, since 1983</h2>
 	<h3 id="total_text" class="hide"></h3>
     <svg id="homeless"></svg>
 <script src="/js/d3/d3.v4.min.js" charset="utf-8"></script>
@@ -147,6 +147,7 @@ d3.json('nyc-homeless-census.json', function(error, data) {
 });
 
 </script>
+	<p id="source">Data courtesy <a target="_parent" href="http://www.coalitionforthehomeless.org/">Coalition For The Homeless</a></p>
 </article>
 </body>
 </html>

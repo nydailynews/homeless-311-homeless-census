@@ -46,7 +46,7 @@ p#source {
 #homeless text {
   fill: #666;
   font: 10px sans-serif;
-  text-anchor: middle;
+  text-anchor: end;
 }
 .axis text {
   text-transform: capitalize; 
@@ -62,9 +62,11 @@ p#source {
 }
 
 .x.axis path {
-  display: none;
 }
 .hide { display: none; }
+.x .tick text,
+.x .tick line
+ { display: none }
 body, figure { margin:0; }
 p, figcaption { font: 17px/30px "PT Serif",serif; }
     </style>
@@ -107,7 +109,7 @@ d3.json('nyc-homeless-census.json', function(error, data) {
         .attr('x', 10)
         .attr('dy', '2.5em')
         .style('text-anchor', 'start')
-        .text('Month')
+        .text('')
 
     g.append('g')
         .attr('class', 'y axis')
@@ -120,32 +122,10 @@ d3.json('nyc-homeless-census.json', function(error, data) {
         .attr('x', function(d) { console.log(d); return x(d['month'] + ' ' + d['year']); })
         .attr('width', x.bandwidth())
         .attr('y', function(d) { return y(+d['total']); } )
-        //.attr('y', height)
-        .attr('height', function(d) { console.log(y(d['total'])); return height - y(d['total']); });
-        //.attr('height', 2000);
+        .attr('height', function(d) { return height - y(d['total']); });
 });
 
 </script>
-    <div class="maps" id="nyc-boroughs"></div>
-    <div id="legend">
-            <h4>NUMBER OF CALLS</h4>
-            <ul>
-                <li style="float: left;">0</li>
-                <li style="float: right;">1800+</li>
-                <li class="graph">
-                    <div class="colors">
-                        <div class="quartile" style="background-color: #FFF;"></div>
-                        <div class="quartile" style="background-color: #FEF0DE;"></div>
-                        <div class="quartile" style="background-color: #FBD29B;"></div>
-                        <div class="quartile" style="background-color: #F7AC4F;"></div>
-                        <div class="quartile" style="background-color: #B0691B;"></div>
-                        <div class="quartile" style="background-color: #000;"></div>
-                    </div>
-                </li>
-            </ul>
-    <p id="source"> Source: XXXXXXX</p>
 </article>
-<script>
-</script>
 </body>
 </html>

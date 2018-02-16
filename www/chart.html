@@ -40,7 +40,8 @@ p#source {
     max-width: 960px;
 }
 #homeless rect {
-  fill: #6CC3FF;
+  fill: #003b63;
+  cursor: pointer;
 }
 
 #homeless text {
@@ -69,8 +70,31 @@ p#source {
  { display: none }
 body, figure { margin:0; }
 p, figcaption { font: 17px/30px "PT Serif",serif; }
-#total_text:after {
-	content: " total homeless";
+h3#total_text span:after {
+	content: "";
+}
+/*
+#homeless .bg-ed-koch { fill: #a66bff; }
+#homeless .bg-david-dinkins { fill: #ff6bc4; }
+#homeless .bg-rudy-giuliani { fill: #ffa66b; }
+#homeless .bg-michael-bloomberg { fill: #c4ff6b; }
+#homeless .bg-bill-de-blasio { fill: #6bffa6; }
+
+#homeless .bg-ed-koch { fill: #; }
+#homeless .bg-david-dinkins { fill: #; }
+#homeless .bg-rudy-giuliani { fill: #; }
+#homeless .bg-michael-bloomberg { fill: #; }
+#homeless .bg-bill-de-blasio { fill: #; }
+*/
+
+#homeless .bg-ed-koch { fill: #e0cbff; }
+#homeless .bg-david-dinkins { fill: #ffcceb; }
+#homeless .bg-rudy-giuliani { fill: #ffe0cc; }
+#homeless .bg-michael-bloomberg { fill: #ebffcc; }
+#homeless .bg-bill-de-blasio { fill: #ccffe0; }
+#homeless .bg-ed-koch { fill: #e0cbff; 
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPScjZmZmJyAvPgogIDxjaXJjbGUgY3g9IjEiIGN5PSIxIiByPSIxIiBmaWxsPSIjMDAwIi8+Cjwvc3ZnPg=="); 
+
 }
     </style>
 </head>
@@ -79,16 +103,37 @@ p, figcaption { font: 17px/30px "PT Serif",serif; }
 <article>
 <div>
     <h2>Homeless in NYC, by month, since 1983</h2>
-	<h3 id="total_text" class="hide"></h3>
+	<h3 id="total_text" class="hide"><span></span></h3>
     <svg id="homeless"></svg>
 <script src="/js/d3/d3.v4.min.js" charset="utf-8"></script>
 <script>
+var month_lookup = {
+        'Jan': 'January',
+        'Feb': 'February',
+        'Mar': 'March',
+        'Apr': 'April',
+        'May': 'May',
+        'Jun': 'June',
+        'Jul': 'July',
+        'Aug': 'August',
+        'Sep': 'September',
+        'Oct': 'October',
+        'Nov': 'November',
+        'Dec': 'December'
+};
 var nyc_mayors = {
 	'Jan-1983': 'Ed Koch',
 	'Jan-1990': 'David Dinkins',
 	'Jan-1994': 'Rudy Giuliani',
 	'Jan-2002': 'Michael Bloomberg',
 	'Jan-2014': 'Bill de Blasio',
+};
+var nyc_mayors_slugs = {
+	'Jan-1983': 'ed-koch',
+	'Jan-1990': 'david-dinkins',
+	'Jan-1994': 'rudy-giuliani',
+	'Jan-2002': 'michael-bloomberg',
+	'Jan-2014': 'bill-de-blasio',
 };
 var cur_mayor = 'Jan-1983';
 
@@ -114,7 +159,8 @@ d3.json('nyc-homeless-census.json', function(error, data) {
     //data = data.slice(0,1000);
 
     x.domain(data.map(function(d) { return d['month'] + ' ' + d['year']; }));
-    y.domain([0, d3.max(data, function(d) { return d['total']; })]);
+    //y.domain([0, d3.max(data, function(d) { return d['total']; })]);
+    y.domain([0, 70000]);
     g.append('g')
         .attr('class', 'x axis')
         .attr('transform', 'translate(0,' + height + ')')
@@ -136,7 +182,9 @@ d3.json('nyc-homeless-census.json', function(error, data) {
 			// This is fun.
 			// The background color is determined by the mayor in office at that time.
 			// We keep track of this via month-year and I should really explain it better but deadline.
-			return 'bg bg-' + d['month'] + '-' + d['year']; })
+			var ym = d['month'] + '-' + d['year'];
+			if ( Object.keys(nyc_mayors_slugs).indexOf(ym) !== -1 ) cur_mayor = ym;
+			return 'bg bg-' + nyc_mayors_slugs[cur_mayor]; })
         .attr('x', function(d) { return x(d['month'] + ' ' + d['year']); })
         .attr('width', x.bandwidth())
         .attr('y', function(d) { return 0; } )
@@ -146,7 +194,7 @@ d3.json('nyc-homeless-census.json', function(error, data) {
         .data(data)
         .enter().append('rect')
 		.on("mouseover", function(d) {
-			total_text.textContent = d['total'].toLocaleString();
+			total_text.innerHTML = d['total'].toLocaleString() + ' total homeless, <span>' + month_lookup[d['month']] + ' ' + d['year'] + '</span>';
 			total_text.classList.remove('hide');
 			console.info(d);
 			/*
@@ -170,12 +218,6 @@ d3.json('nyc-homeless-census.json', function(error, data) {
 });
 
 </script>
-<style>
-#homeless rect.bg
- {
-    fill: #000;
-}
-</style>
 	<p id="source">Data courtesy <a target="_parent" href="http://www.coalitionforthehomeless.org/">Coalition For The Homeless</a></p>
 </article>
 </body>

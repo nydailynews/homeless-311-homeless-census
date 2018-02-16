@@ -49,7 +49,7 @@ p#source {
 #homeless text {
   fill: #666;
   font: 10px sans-serif;
-  text-anchor: end;
+  text-anchor: start;
 }
 .axis text {
   text-transform: capitalize; 
@@ -96,6 +96,11 @@ p, figcaption { font: 17px/30px "PT Serif",serif; }
 #homeless .bg-rudy-giuliani { fill: url(#diagonal-stripe-1); }
 #homeless .bg-michael-bloomberg { fill: url(#circles-2); }
 #homeless .bg-bill-de-blasio { fill: url(#crosshatch); }
+
+.mayor {
+	width: 50px;
+	height: 50px;
+}
     </style>
 </head>
 <body>
@@ -137,11 +142,11 @@ var nyc_mayors_slugs = {
 var cur_mayor = 'Jan-1983';
 
 d3.json('nyc-homeless-census.json', function(error, data) {
-    var margin = { top: 10, right: 10, bottom: 10, left: 40 };
+    var margin = { top: 10, right: 10, bottom: 10, left: 10 };
     //width = 500 - margin.left - margin.right;
 	max_width = document.documentElement.clientWidth;
 	if ( max_width > 500 ) max_width = 500;
-	if ( max_width < 470 ) max_width = 470;
+	if ( max_width < 440 ) max_width = 440;
     width = max_width - margin.left - margin.right;
     height = 500 - margin.top - margin.bottom;
     var x = d3.scaleBand()
@@ -150,7 +155,7 @@ d3.json('nyc-homeless-census.json', function(error, data) {
     var y = d3.scaleLinear()
         .rangeRound([height, 0]);
     var x_axis = d3.axisBottom(x);
-    var y_axis = d3.axisLeft(y)
+    var y_axis = d3.axisRight(y)
         .ticks(7);
     var c = d3.select('#homeless')
         .attr('width', width + margin.left + margin.right)
@@ -163,20 +168,6 @@ d3.json('nyc-homeless-census.json', function(error, data) {
     x.domain(data.map(function(d) { return d['month'] + ' ' + d['year']; }));
     //y.domain([0, d3.max(data, function(d) { return d['total']; })]);
     y.domain([0, 70000]);
-    g.append('g')
-        .attr('class', 'x axis')
-        .attr('transform', 'translate(0,' + height + ')')
-        .call(x_axis)
-        .append('text')
-        .attr('x', 10)
-        .attr('dy', '2.5em')
-        .style('text-anchor', 'start')
-        .text('')
-
-    g.append('g')
-        .attr('class', 'y axis')
-        .call(y_axis)
-
     g.selectAll('bg')
         .data(data)
         .enter().append('rect')
@@ -191,6 +182,20 @@ d3.json('nyc-homeless-census.json', function(error, data) {
         .attr('width', x.bandwidth())
         .attr('y', function(d) { return 0; } )
         .attr('height', function(d) { return height; });
+
+    g.append('g')
+        .attr('class', 'x axis')
+        .attr('transform', 'translate(0,' + height + ')')
+        .call(x_axis)
+        .append('text')
+        .attr('x', 10)
+        .attr('dy', '2.5em')
+        .style('text-anchor', 'start')
+        .text('')
+
+    g.append('g')
+        .attr('class', 'y axis')
+        .call(y_axis)
 
     g.selectAll('bar')
         .data(data)
@@ -217,6 +222,15 @@ d3.json('nyc-homeless-census.json', function(error, data) {
         .attr('width', x.bandwidth())
         .attr('y', function(d) { return y(+d['total']); } )
         .attr('height', function(d) { return height - y(d['total']); });
+
+	// ADD THE MAYORS FACES
+	var imgs = g.selectAll("image").data([0]);
+		imgs.enter()
+		.append("svg:image")
+		.attr("xlink:href", "img/ed-koch.png")
+        .attr("x", "30")
+        .attr("y", "30")
+        .attr("class", "mayor")
 });
 
 </script>

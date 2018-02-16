@@ -83,8 +83,17 @@ p, figcaption { font: 17px/30px "PT Serif",serif; }
     <svg id="homeless"></svg>
 <script src="/js/d3/d3.v4.min.js" charset="utf-8"></script>
 <script>
+var nyc_mayors = {
+	'Jan-1983': 'Ed Koch',
+	'Jan-1990': 'David Dinkins',
+	'Jan-1994': 'Rudy Giuliani',
+	'Jan-2002': 'Michael Bloomberg',
+	'Jan-2014': 'Bill de Blasio',
+};
+var cur_mayor = 'Jan-1983';
+
 d3.json('nyc-homeless-census.json', function(error, data) {
-    var margin = { top: 20, right: 20, bottom: 30, left: 30 };
+    var margin = { top: 20, right: 20, bottom: 30, left: 40 };
     width = 500 - margin.left - margin.right;
     height = 500 - margin.top - margin.bottom;
     var x = d3.scaleBand()
@@ -120,6 +129,19 @@ d3.json('nyc-homeless-census.json', function(error, data) {
         .attr('class', 'y axis')
         .call(y_axis)
 
+    g.selectAll('bg')
+        .data(data)
+        .enter().append('rect')
+        .attr('class', function(d) {
+			// This is fun.
+			// The background color is determined by the mayor in office at that time.
+			// We keep track of this via month-year and I should really explain it better but deadline.
+			return 'bg bg-' + d['month'] + '-' + d['year']; })
+        .attr('x', function(d) { return x(d['month'] + ' ' + d['year']); })
+        .attr('width', x.bandwidth())
+        .attr('y', function(d) { return 0; } )
+        .attr('height', function(d) { return height; });
+
     g.selectAll('bar')
         .data(data)
         .enter().append('rect')
@@ -140,13 +162,20 @@ d3.json('nyc-homeless-census.json', function(error, data) {
 		} )
 		.on("mouseout", function(d) { } )
         .attr('class', 'bar')
-        .attr('x', function(d) { console.log(d); return x(d['month'] + ' ' + d['year']); })
+        .attr('id', function(d) { return d['month'] + '-' + d['year']; })
+        .attr('x', function(d) { return x(d['month'] + ' ' + d['year']); })
         .attr('width', x.bandwidth())
         .attr('y', function(d) { return y(+d['total']); } )
         .attr('height', function(d) { return height - y(d['total']); });
 });
 
 </script>
+<style>
+#homeless rect.bg
+ {
+    fill: #000;
+}
+</style>
 	<p id="source">Data courtesy <a target="_parent" href="http://www.coalitionforthehomeless.org/">Coalition For The Homeless</a></p>
 </article>
 </body>
